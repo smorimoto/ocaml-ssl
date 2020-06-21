@@ -1173,6 +1173,7 @@ static value alloc_tm(struct tm *tm)
   return res;
 }
 
+#ifdef ASN1_TIME_to_tm
 CAMLprim value ocaml_ssl_get_start_date(value certificate)
 {
   CAMLparam1(certificate);
@@ -1198,6 +1199,18 @@ CAMLprim value ocaml_ssl_get_expiration_date(value certificate)
 
   CAMLreturn(alloc_tm(&t));
 }
+#else
+CAMLprim value ocaml_ssl_get_start_date(value ignored)
+{
+  caml_invalid_argument ("SSL.get_start_date not implemented");
+}
+
+CAMLprim value ocaml_ssl_get_expiration_date(value ignored)
+{
+  caml_invalid_argument ("SSL.get_expiration_date not implemented");
+}
+#endif
+
 
 CAMLprim value ocaml_ssl_ctx_load_verify_locations(value context, value ca_file, value ca_path)
 {
