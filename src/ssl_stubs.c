@@ -889,25 +889,35 @@ CAMLprim value ocaml_ssl_version(value socket)
   caml_leave_blocking_section();
 
   switch(version) {
+#ifdef SSL_version
     case SSL3_VERSION:
       ret = 1;
       break;
+#endif
 
+#ifdef TLS1_VERSION
     case TLS1_VERSION:
       ret = 2;
       break;
+#endif
 
+#ifdef TLS1_1_VERSION
     case TLS1_1_VERSION:
       ret = 3;
       break;
+#endif
 
+#ifdef TLS1_2_VERSION
     case TLS1_2_VERSION:
       ret = 4;
       break;
+#endif
 
+#ifdef TLS1_3_VERSION
     case TLS1_3_VERSION:
       ret = 5;
       break;
+#endif
 
     default:
       caml_failwith("Ssl.version");
